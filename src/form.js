@@ -1,10 +1,12 @@
 import * as React from 'react';
-import {Avatar,Typography,TextField,Radio,RadioGroup,FormControlLabel,FormControl,FormLabel,Rating,Stack,Button,Grid,styled,Paper,Card,CardContent,CardActions,CardHeader} from '@mui/material';
+import {Avatar,IconButton,Typography,TextField,Radio,RadioGroup,FormControlLabel,FormControl,FormLabel,Rating,Button,Grid,styled,Paper,Card,CardContent,CardActions,CardHeader} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import { useState } from 'react';
 import img from './pocket-puppy.jpg';
 
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    backgroundColor: theme.palette.mode === 'dark' ? '#b026bf' : '#ffea8f',
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: 'center',
@@ -60,13 +62,13 @@ function Form()
             <Grid item xs={6}>
             <Item>
             <FormControl sx={{width:"100%",height:"100%"}}>
-            <br></br><br></br>
+            <br></br>
                 <div>
-                    <TextField sx={{width:"100%",}} id="name" label="Name" value={name} variant="outlined" onChange={(n) => setName(n.target.value)}/>
-                </div><br></br><br></br>
+                    <TextField sx={{width:"50",}} id="name" label="Name" value={name} variant="outlined" onChange={(n) => setName(n.target.value)}/>
+                </div><br></br>
                 <div>
-                    <TextField sx={{width:"100%",}} id="feedback" label="Feedback" multiline rows={4} value={feedback} onChange={(f) => setFeedback(f.target.value)}/>
-                </div><br></br><br></br>
+                    <TextField sx={{width:"50",}} id="feedback" label="Feedback" multiline rows={4} value={feedback} onChange={(f) => setFeedback(f.target.value)}/>
+                </div><br></br>
                 <div>
                 <FormControl>
                     <FormLabel id="gender">Gender</FormLabel>
@@ -76,17 +78,14 @@ function Form()
                         <FormControlLabel value="other" control={<Radio />} label="Other" />
                     </RadioGroup>
                 </FormControl>
-                </div><br></br><br></br>
+                </div><br></br>
                 <div>
-                <Stack spacing={1} sx={{ml:1,}}>Rating:
+                    <Typography sx={{ml:3,}} variant="h6">Rating</Typography>
                     <Rating name="size-large" defaultValue={2} size="large" value={rating} onChange={(r) => setRating(r.target.value)}/>
-                </Stack>
-                </div><br></br><br></br>
+                </div><br></br>
                 <br></br>
                 <div>
-                    <Stack direction="row" spacing={2}>
-                        <Button variant="contained" color="success" onClick={() => submit()}>Submit </Button>
-                    </Stack>
+                    <Button variant="contained" color="success" onClick={() => submit()}>Submit </Button>
                 </div>
             </FormControl>
             </Item>
@@ -97,23 +96,25 @@ function Form()
                     {
                         data && data.map(final => {
                             return(
-                                <Card sx={{minWidth:100}}>
-                                    <CardHeader avatar={
-                                        <Avatar alt="Pocket-Puppy" src={img} sx={{width:100,height:100,}} />
-                                    }
+                                <Card sx={{minWidth:100,p:5,height:"100", m:2,}}>
+                                    <CardHeader 
+                                        avatar={
+                                            <Avatar alt="Pocket-Puppy" src={img} sx={{width:100,height:100,}} />
+                                        }
                                     />
+                                    <CardActions>
+                                        <IconButton aria-label="edit" onClick={() => edit(final.id)}><EditIcon /></IconButton>
+                                    </CardActions>
+                                    <CardActions>
+                                        <IconButton aria-label="delete" onClick={() => remove(final.id)}><DeleteIcon /></IconButton>
+                                    </CardActions>
                                     <CardContent> 
                                         <Typography gutterBottom variant="h5">Name:{final.name}</Typography>
                                         <Typography gutterBottom variant="h5">Feedback:{final.feedback}</Typography>
                                         <Typography gutterBottom variant="h5">Gender:{final.gender}</Typography>
                                         <Typography gutterBottom variant="h5">Rating:{final.rating}</Typography>
                                     </CardContent>
-                                    <CardActions> 
-                                        <Button size="small" onClick={() => edit(final.id)}>Edit</Button>
-                                        <Button size="small" onClick={() => remove(final.id)}>Delete</Button>
-                                    </CardActions>
                                 </Card>
-                                
                             )
                         }) 
                     }
